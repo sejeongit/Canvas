@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">  
+  <title>기본 애니메이션</title>
+</head>
+<body onload="init();">
+  <canvas id="canvas" width="1000" height="1000"></canvas>
+  <script type="text/javascript">
+    // 기본 애니메이션
+    // 도형은 한번 만들어 놓으면 그 모습 그대로 있다는 것이 애니메이션을 만들 때의 가장 큰 제약일 것입니다. 그 도형을 움직이고자 하면 그 도형뿐만이 아니라 그 도형이 그려지기 전에 그려진 모든 것을 다시 그려야 합니다. 복잡한 장면을 다시 그리는 것은 시간도 많이 걸리며, 코드를 실행하는 컴퓨터의 능력에 따라 달라집니다.
+
+    // 기본 애니메이션 단계
+    // 1. 캔버스를 비웁니다.
+    // 그리려는 도형이 (배경 이미지를 만들 때처럼) 캔버스를 가득 채우는 것이 아니라면, 이전에 그려진 모든 도형을 지울 필요가 있습니다. 가장 쉬운 방법은 clearRect() 메소드를 사용하는 것입니다.
+    // 2, 캔버스 상태를 저장합니다.
+    // 캔버스 상태에 영향을 주는 (스타일 변경, 모양 변형 등의) 설정값을 바꾸려고 하고, 바뀐 값을 각 장면마다 사용하려고 한다면, 원래 상태를 저장할 필요가 있습니다.
+    // 3. 애니메이션할 도형을 그립니다.
+    // 실제 장면을 그리는 단계입니다.
+    // 4. 캔버스 상태를 복원합니다.
+    // 새로운 장면을 그리기 전에 저장된 상태를 복원합니다.
+
+    // 애니메이션 제어하기
+    // 캔버스 메소드를 사용하거나 사용자 함수를 사용하여 캔버스에 도형들을 그립니다. 보통의 경우에서는, 코드 실행이 완료되면 캔버스에 나타나는 결과만을 보게 됩니다. 예를 들어,  for 반복문 안에서 애니메이션을 실행하는 것은 불가능합니다.
+    // 그래서 정해진 시간마다 그리기 함수를 실행하는 방법이 필요한 것입니다. 아래와 같이 애니메이션을 제어하는 두 가지 방법이 있습니다.
+
+    // 예정된 변경
+    // 정해진 시간마다 특정 함수를 부를 때 사용할 수 있는 window.setInterval()과 window.setTimeout() 함수가 있습니다.
+
+    // setInterval(function, delay) : delay 밀리세컨드(1,000분의 1초)마다 function 함수 반복 실행을 시작합니다.
+    // setTimeout(function, delay) : delay 밀리세컨드(1,000분의 1초) 경과 후, function 함수를 실행합니다.
+    // 사용자의 제어를  필요로 하지 않는 반복 실행에는  setInterval() 함수가 알맞을 것입니다.
+
+    // 사용자 상호 작용 변경
+    // 애니메이션을 제어하는 두번째 방법은 사용자 입력입니다. 게임을 만들려고 한다면, 애니메이션을 제어하기 위해 키보드나 마우스 이벤트를 사용할 수 있을 것입니다.  EventListener를 설정하여, 사용자와 상호 작용하여 애니메이션 함수를 실행합니다.
+    // 사용자 상호 작용이 필요하다면, 우리가 만든 애니메이션용 프레임웍(framework)의 최소 기능 버전 또는 최대 기능 버전을 사용할 수 있을 것입니다.
+    // var myAnimation = new MiniDaemon(null, animateShape, 500, Infinity);
+    // var myAnimation = new Daemon(null, animateShape, 500, Infinity);
+
+    // 태양계 애니메이션
+    var sun = new Image();
+    var moon = new Image();
+    var earth = new Image();
+    function init(){
+      sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
+      moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+      earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+      setInterval(draw,100);
+    }
+
+    function draw() {
+      var ctx = document.getElementById('canvas').getContext('2d');
+
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.clearRect(0,0,300,300); // 캔버스를 비운다
+
+      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      ctx.strokeStyle = 'rgba(0,153,255,0.4)';
+      ctx.save();
+      ctx.translate(150,150);
+
+      // 지구
+      var time = new Date();
+      ctx.rotate( ((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds() );
+      ctx.translate(105,0);
+      ctx.fillRect(0,-12,50,24); // Shadow
+      ctx.drawImage(earth,-12,-12);
+
+      // 달
+      ctx.save();
+      ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/6000)*time.getMilliseconds() );
+      ctx.translate(0,28.5);
+      ctx.drawImage(moon,-3.5,-3.5);
+      ctx.restore();
+
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.arc(150,150,105,0,Math.PI*2,false); // 지구 궤도
+      ctx.stroke();
+
+      ctx.drawImage(sun,0,0,300,300);
+    }
+
+    // 시계 애니메이션
+  //   function init(){
+  //   clock();
+  //   setInterval(clock,1000);
+  // }
+
+  // function clock(){
+  //   var now = new Date();
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+  //   ctx.save();
+  //   ctx.clearRect(0,0,150,150);
+  //   ctx.translate(75,75);
+  //   ctx.scale(0.4,0.4);
+  //   ctx.rotate(-Math.PI/2);
+  //   ctx.strokeStyle = "black";
+  //   ctx.fillStyle = "white";
+  //   ctx.lineWidth = 8;
+  //   ctx.lineCap = "round";
+
+  //   // 시계판 - 시
+  //   ctx.save();
+  //   for (var i=0;i<12;i++){
+  //     ctx.beginPath();
+  //     ctx.rotate(Math.PI/6);
+  //     ctx.moveTo(100,0);
+  //     ctx.lineTo(120,0);
+  //     ctx.stroke();
+  //   }
+  //   ctx.restore();
+
+  //   // 시계판 - 분
+  //   ctx.save();
+  //   ctx.lineWidth = 5;
+  //   for (i=0;i<60;i++){
+  //     if (i%5!=0) {
+  //       ctx.beginPath();
+  //       ctx.moveTo(117,0);
+  //       ctx.lineTo(120,0);
+  //       ctx.stroke();
+  //     }
+  //     ctx.rotate(Math.PI/30);
+  //   }
+  //   ctx.restore();
+
+  //   var sec = now.getSeconds();
+  //   var min = now.getMinutes();
+  //   var hr  = now.getHours();
+  //   hr = hr>=12 ? hr-12 : hr;
+
+  //   ctx.fillStyle = "black";
+
+  //   // 시간 표시 - 시
+  //   ctx.save();
+  //   ctx.rotate( hr*(Math.PI/6) + (Math.PI/360)*min + (Math.PI/21600)*sec )
+  //   ctx.lineWidth = 14;
+  //   ctx.beginPath();
+  //   ctx.moveTo(-20,0);
+  //   ctx.lineTo(80,0);
+  //   ctx.stroke();
+  //   ctx.restore();
+
+  //   // 시간 표시 - 분
+  //   ctx.save();
+  //   ctx.rotate( (Math.PI/30)*min + (Math.PI/1800)*sec )
+  //   ctx.lineWidth = 10;
+  //   ctx.beginPath();
+  //   ctx.moveTo(-28,0);
+  //   ctx.lineTo(112,0);
+  //   ctx.stroke();
+  //   ctx.restore();
+
+  //   // 시간 표시 - 초
+  //   ctx.save();
+  //   ctx.rotate(sec * Math.PI/30);
+  //   ctx.strokeStyle = "#D40000";
+  //   ctx.fillStyle = "#D40000";
+  //   ctx.lineWidth = 6;
+  //   ctx.beginPath();
+  //   ctx.moveTo(-30,0);
+  //   ctx.lineTo(83,0);
+  //   ctx.stroke();
+  //   ctx.beginPath();
+  //   ctx.arc(0,0,10,0,Math.PI*2,true);
+  //   ctx.fill();
+  //   ctx.beginPath();
+  //   ctx.arc(95,0,10,0,Math.PI*2,true);
+  //   ctx.stroke();
+  //   ctx.fillStyle = "rgba(0,0,0,0)";
+  //   ctx.arc(0,0,3,0,Math.PI*2,true);
+  //   ctx.fill();
+  //   ctx.restore();
+
+  //   ctx.beginPath();
+  //   ctx.lineWidth = 14;
+  //   ctx.strokeStyle = '#325FA2';
+  //   ctx.arc(0,0,142,0,Math.PI*2,true);
+  //   ctx.stroke();
+
+  //   ctx.restore();
+  // }
+  </script>
+</body>
+</html>

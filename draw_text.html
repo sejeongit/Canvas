@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>텍스트 그리기</title>
+  <script type="text/javascript">
+    // 텍스트 그리기
+    // 캔버스 렌더링 컨텍스트(canvas rendering context)는 텍스트를 렌더링하는 두 가지 방법을 제공합니다.
+    // fillText(text, x, y [, maxWidth]) : 주어진 (x,y) 위치에 주어진 텍스트를 채웁니다. 최대 폭(width)은 옵션 값입니다.
+    // strokeText(text, x, y [, maxWidth]) : 주어진 (x,y) 위치에 주어진 텍스트를 칠(stroke)합니다. 최대 폭(width)은 옵션 값입니다.
+
+    // fillText 예제
+    // function draw() {
+    //   var ctx = document.getElementById('canvas').getContext('2d');
+    //   ctx.font = '48px serif';
+    //   ctx.fillText('Hello world', 10, 50);
+    // }
+
+    // strokeText 예제
+    // function draw() {
+    //   var ctx = document.getElementById('canvas').getContext('2d');
+    //   ctx.font = '48px serif';
+    //   ctx.strokeText('Hello world', 10, 50);
+    // }
+    
+    // 텍스트 스타일 적용하기
+    // font = value : 텍스트를 그릴 때 사용되는 현재 텍스트 스타일. 이 문자열은 CSS font 프로퍼티와 동일한 구문을 사용합니다. 기본값으로 sans-serif의 10px가 설정되어 있습니다.
+    // textAlign = value : 텍스트 정렬 설정. 사용가능한 값 : start, end, left, right, center. 기본값은 start입니다.
+    // textBaseline = value : 베이스라인 정렬 설정. 사용가능한 값 : top, hanging, middle, alphabetic, ideographic, bottom. 기본 값은 alphabetic입니다.
+    // direction = value : 글자 방향. 사용가능한 값 : ltr, rtl, inherit. 기본 값은 inherit입니다.
+
+    // textBaseline 예제
+    // function draw() {
+    //   var ctx = document.getElementById('canvas').getContext('2d');
+    //   ctx.font = '48px serif';
+    //   ctx.textBaseling = 'hanging';
+    //   ctx.strokeText('Hello world', 0, 100);
+    // }  
+
+    // 어드밴스드 텍스트 추정
+    // measureText() : 현재 스타일로 특정 텍스트가 그려질 때의 폭, 픽셀 등을 포함하는 textMetrics 객체 리턴.
+    function draw() {
+      var ctx = document.getElementById('canvas').getContext('2d');
+      var text = ctx.measureText('foo'); // TextMetrics object
+      console.log(text.width); // 16
+    }
+
+  </script>
+</head>
+<body onload="draw();">
+  <canvas id="canvas" width="400" height="150"></canvas>  
+</body>
+</html>

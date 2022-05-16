@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>고급 애니메이션</title>
+</head>
+<body>
+  <canvas id="canvas" width="600" height="300"></canvas>  
+  <script type="text/javascript">
+    // 고급 애니메이션
+    // 언제나처럼, 우리는 context를 먼저 그려야 한다. 공을 그리기 위해 우리는 캔버스에 그림을 그리기 위한 프로퍼티와 draw() 메소드를 가진 ball 오브젝트를 생성할 것이다.
+    // var canvas = document.getElementById('canvas');
+    // var ctx = canvas.getContext('2d');
+
+    // var ball = {
+    //   x: 100,
+    //   y: 100,
+    //   radius: 25,
+    //   color: 'blue',
+    //   draw: function() {
+    //     ctx.beginPath();
+    //     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+    //     ctx.closePath();
+    //     ctx.fillStyle = this.color;
+    //     ctx.fill();
+    //   }
+    // };
+
+    // ball.draw();
+
+    
+    // 속도 추가하기
+    // var canvas = document.getElementById('canvas');
+    // var ctx = canvas.getContext('2d');
+    // var raf;
+
+    // var ball = {
+    //   x: 100,
+    //   y: 100,
+    //   vx: 5,
+    //   vy: 2,
+    //   radius: 25,
+    //   color: 'blue',
+    //   draw: function() {
+    //     ctx.beginPath();
+    //     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+    //     ctx.closePath();
+    //     ctx.fillStyle = this.color;
+    //     ctx.fill();
+    //   }
+    // };
+
+    // function draw() {
+    //   ctx.clearRect(0,0, canvas.width, canvas.height);
+    //   ball.draw();
+    //   ball.x += ball.vx;
+    //   ball.y += ball.vy;
+    //   raf = window.requestAnimationFrame(draw);
+    // }
+
+    // canvas.addEventListener('mouseover', function(e) {
+    //   raf = window.requestAnimationFrame(draw);
+    // });
+
+    // canvas.addEventListener('mouseout', function(e) {
+    //   window.cancelAnimationFrame(raf);
+    // });
+
+    // ball.draw();
+
+
+    // 경계
+    // 경게 충돌 테스트의 필요 없이 우리가 만든 공은 캔버스 밖으로 빠르게 빠져나갈 것입니다. 우리는 공의 x 와 y 위치가 캔버스 차원을 빠져나갔는지 체크해서 방향과 속도를 바꿔주어야 합니다. 그러기 위해서 우리는 draw 메소드에 다음 확인사항을 추가할 것입니다.:
+
+    // if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
+    //   ball.vy = -ball.vy;
+    // }
+    // if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
+    //   ball.vx = -ball.vx;
+    // }
+
+
+    // 가속
+    // 움직임을 좀 더 리얼하게 만들기 위해, 우리는 속도를 다음과 같이 줄 겁니다. 예를들어:
+    // ball.vy *= .99;
+    // ball.vy += .25;
+    // 이것은 각 프레임의 세로 속도를 줄여주어, 공이 결국 바닥에서 튀게 만듭니다.
+
+
+    // 후행 효과
+    // 지금까지 우리는 clearRect (en-US)메소드를 사용해서 이전 프레임을 지웠다. 만약 당신이 fillRect (en-US)르 사용하여 약간 투명도를 준다면, 쉽게 후행 효과(Trailing effect)를 만들 수 있을 것이다.
+    // ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    // ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+    // 마우스 컨트롤 추가하기
+    // 공을 컨트롤 하기 위해, 우리는 mousemove 이벤트를 사용하여 마우스를 따라오게 할 것이다. click 이벤트를 통해 공을 놓으면 다시 공이 튀도록 할 것이다.
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var raf;
+    var running = false;
+
+    var ball = {
+      x: 100,
+      y: 100,
+      vx: 5,
+      vy: 1,
+      radius: 25,
+      color: 'blue',
+      draw: function() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    };
+
+    function clear() {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+    }
+
+    function draw() {
+      clear();
+      ball.draw();
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
+        ball.vy = -ball.vy;
+      }
+      if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
+        ball.vx = -ball.vx;
+      }
+
+      raf = window.requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener('mousemove', function(e) {
+      if (!running) {
+        clear();
+        ball.x = e.clientX;
+        ball.y = e.clientY;
+        ball.draw();
+      }
+    });
+
+    canvas.addEventListener('click', function(e) {
+      if (!running) {
+        raf = window.requestAnimationFrame(draw);
+        running = true;
+      }
+    });
+
+    canvas.addEventListener('mouseout', function(e) {
+      window.cancelAnimationFrame(raf);
+      running = false;
+    });
+
+    ball.draw();
+
+  </script>
+</body>
+</html>

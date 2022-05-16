@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>스타일과 색 적용하기</title>
+</head>
+<script type="text/javascript">
+  // 색상
+  // fillStyle = color : 도형을 채우는 색을 설정합니다.
+  // strokeStyle = color : 도형의 윤곽선 색을 설정합니다.
+  // 여기서의 color는 CSS의 <color>, 그라디언트 객체, 패턴 객체를 뜻합니다. 그라디언트 객체와 패턴 객체는 페이지 아래에서 설명합니다. 윤곽선과 채움 색의 초기 설정값은 검은색입니다. (CSS 색상 값 #000000)
+
+  // 참고: strokeStyle 또는 fillStyle 속성을 설정하면, 새로 설정된 값이 앞으로 그려질 도형의 기본 값이 됩니다. 각 도형에 다른 색을 적용하려면 fillStyle 또는 strokeStyle 속성을 다시 적용해야 합니다. 
+
+  // 색의 올바른 값은 CSS3 사양에 나오는 <color> 값입니다. 아래에 나오는 색은 모두 한가지 색을 다르게 표현한 것입니다.
+  
+  // fillStyle에 적용되는 색은 모두 '오렌지'
+  // ctx.fillStyle = "orange";  
+  // ctx.fillStyle = "#FFA500";
+  // ctx.fillStyle = "rgb(255, 165, 0)";
+  // ctx.fillStyle = "rgba(255, 165, 0, 1)";
+
+  // fillStyle 예제
+  // 이 예제에서 for 반복문을 두 번 사용하여 사각형 격자를 그릴 것입니다. 각 사각형의 RGB 색상값에서 붉은색과 녹색 값만을 변수 i와 j를 사용하여 변경합니다. 파란색 채널은 고정된 값입니다. 채널 값들을 변경함으로써, 모든 종류의 팔레트를 생성할 수 있습니다. 단계를 늘리면 Photoshop에서 사용하는 색상 팔레트와 비슷한 모양을 얻을 수 있습니다.
+
+  // function draw() {
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+  //   for (var i = 0; i < 6; i++){
+  //     for(var j = 0; j < 6; j++){
+  //       ctx.fillStyle = 'rgb(' + Math.floor(255 - 42.5 * i) + ', '  + Math.floor(255 - 42.5 * j) + ', 0)';
+  //       ctx.fillRect(j * 25, i * 25, 25, 25);
+  //     }
+  //   }
+  // }
+
+
+  // strokeStyle 예제
+  // 이번 예제는 위에 나온 예제와 비슷하지만, strokeStyle 속성을 사용하여 윤곽선의 색을 바꿉니다. 사각형 대신, 원을 그리는 arc() 메소드를 사용합니다.
+
+  // function draw() {
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+  //   for(var i = 0; i < 6; i++){
+  //     for(var j = 0; j < 6; j++){
+  //       ctx.strokeStyle = 'rgb(0, ' + Math.floor(255 - 42.5 * i) + ', ' + Math.floor(255 - 42.5 * j) + ')';
+  //       ctx.beginPath();
+  //       ctx.arc(12.5 + j * 25, 12.5 + i * 25, 10, 0, Math.PI * 2, true);
+  //       ctx.stroke();
+  //     }
+  //   }
+  // }
+
+
+  // 투명도
+  // 캔버스에는 불투명한 도형을 그릴 수도 있고, 반투명한 도형도 그릴 수도 있습니다. globalAlpha 값을 설정하거나 윤곽선 또는 fillStyle에 반투명 색을 적용하면 됩니다.
+
+  // globalAlpha = transparencyValue (en-US)
+  // 투명도 값이 설정되면 이후 캔버스에 그려지는 모든 도형들의 투명도가 바뀝니다. 설정하는 값은 0.0(완전히 투명)과 1.0(완전히 불투명) 사이에 있어야 하며, 초기 설정값은 1.0(완전히 투명)입니다.
+  // globalAlpha는 모두 같은 투명도로 캔버스에 많은 도형을 그릴 때 유용합니다. 하지만, 보통은 각각의 도형마다 투명도를 설정하는 것이 더 유용할 것입니다.
+
+  // strokeStyle과 fillStyle 값에 CSS rgba 색상값을 적용할 수 있으므로, 투명한 색을 적용하려면 아래와 같은 표기법을 사용할 수 있습니다.
+
+  // 외곽선과 채움 스타일에 투명 적용
+  // ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+  // ctx.fillStyle  = 'rgba(255, 0, 0, 0.5)';
+
+  // globalAlpha 예제
+  // function draw() {
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+  //   // 배경을 그린다
+  //   ctx.fillStyle = '#FD0';
+  //   ctx.fillRect(0, 0, 75, 75);
+  //   ctx.fillStyle = '#6C0';
+  //   ctx.fillRect(75, 0, 75, 75);
+  //   ctx.fillStyle = '#09F';
+  //   ctx.fillRect(0, 75, 75, 75);
+  //   ctx.fillStyle = '#F30';
+  //   ctx.fillRect(75, 75, 75, 75);
+  //   ctx.fillStyle = '#FFF';
+
+  //   // 투명값을 설정한다
+  //   ctx.globalAlpha = 0.2;
+
+  //   // 반투명한 원을 그린다.
+  //   for(var i = 0; i < 7; i++){
+  //     ctx.beginPath();
+  //     ctx.arc(75, 75, 10 + 10 * i, 0, Math.PI * 2, true);
+  //     ctx.fill();
+  //   }
+  // }
+
+  // rgba()를 사용한 예제
+  //  각각의 도형마다 윤곽선이나 채움 스타일을 따로따로 설정할 수 있기 때문에, rgba()를 사용할 때는 조금 더 제어가 쉽고 융통성도 있습니다.
+  // function draw(){
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+    
+  //   // 배경을 그린다
+  //   ctx.fillStyle = 'rgb(255,221,0)';
+  //   ctx.fillRect(0,0,150,37.5);
+  //   ctx.fillStyle = 'rgb(102,204,0)';
+  //   ctx.fillRect(0,37.5,150,37.5);
+  //   ctx.fillStyle = 'rgb(0,153,255)';
+  //   ctx.fillRect(0,75,150,37.5);
+  //   ctx.fillStyle = 'rgb(255,51,0)';
+  //   ctx.fillRect(0,112.5,150,37.5);
+
+  //   // 반투명한 사각형을 그린다
+  //   for (var i=0; i<10; i++) {
+  //     ctx.fillStyle = 'rgba(255,255,255,'+(i+1)/10+')';
+  //     for (var j=0; j<4; j++){
+  //       ctx.fillRect(5+i*14, 5+j*37.5, 14, 27.5)
+  //     }
+  //   }
+  // }
+
+  // 선모양
+  // lineWidth = value : 이후 그려질 선의 두께를 설정합니다.
+  // lineCap = type : 선의 끝 모양을 설정합니다.
+  // lineJoin = type : 선들이 만나는 "모서리"의 모양을 설정합니다.
+  // miterLimit = value : 두 선이 예각으로 만날 때 접합점의 두께를 제어할 수 있도록, 연결 부위의 크기를 제한하는 값을 설정합니다.
+  // getLineDash() : 음수가 아닌 짝수를 포함하는 현재 선의 대시 패턴 배열을 반환합니다.
+  // setLineDash(segments) : 현재 선의 대시 패턴을 설정합니다.
+  // lineDashOffset = value : 선의 대시 배열이 어디서 시작될지 지정합니다.
+
+  // lineWidth 예제
+  // 현재 선의 두께를 설정합니다. 설정값은 반드시 양수이어야 하며, 초기 설정값은 1.0 단위입니다.
+  // 선의 두께는 지정된 경로의 가운데에 있는 획의 두께입니다. 이 말의 뜻은, 경로의 좌우로, 설정된 두께 반 만큼의 폭 영역이 그려진다는 것입니다. 캔버스 좌표는 픽셀을 직접 참조하지 않으므로, 선명한 수평 및 수직선을 얻기 위해 특별히 주의를 기울여야 합니다.
+
+  // 아래에 나오는 예제에서는, 선의 두께가 점점 증가하는 10개의 직선이 그려집니다. 가장 왼쪽의 선은 1.0 단위 폭입니다. 그러나, 경로의 위치 때문에 가장 왼쪽과 다른 모든 홀수 폭 두께 선은 선명하게 보이지 않습니다.
+  // function draw(){
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+  //   for(var i = 0; i < 10; i++){
+  //     ctx.lineWidth = 1 + i;
+  //     ctx.beginPath();
+  //     ctx.moveTo(5 + i * 14, 5);
+  //     ctx.lineTo(5 + i * 14, 140);
+  //     ctx.stroke();
+  //   }
+  // }
+
+  // lineCap 예제
+  // lineCap 속성은 그리려는 모든 선의 끝점 모양을 결정합니다. butt, round, square라는 세 가지 값을 가지며, 초기 설정값은 butt입니다.
+  // butt : 선의 끝이 좌표에 딱맞게 잘립니다.
+  // round : 선의 끝이 동그랗습니다.
+  // square : 선 끝에, 선 두께 반만큼의 사각형 영역이 더해집니다.
+  // function draw() {
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+  //   var lineCap = ['butt', 'round', 'square'];
+
+  //   // 안내선을 그린다
+  //   ctx.strokeStyle = '#09f';
+  //   ctx.beginPath();
+  //   ctx.moveTo(10, 10);
+  //   ctx.lineTo(140, 10);
+  //   ctx.moveTo(10, 140);
+  //   ctx.lineTo(140, 140);
+  //   ctx.stroke();
+
+  //   // 선을 그린다
+  //   ctx.strokeStyle = 'black';
+  //   for (var i=0; i<lineCap.length; i++){
+  //     ctx.lineWidth = 15;
+  //     ctx.lineCap = lineCap[i];
+  //     ctx.beginPath();
+  //     ctx.moveTo(25 + i * 50, 10);
+  //     ctx.lineTo(25 + i * 50, 140);
+  //     ctx.stroke();
+  //   }
+  // } 
+
+  // lineJoin 예제
+  // lineJoin 속성은, 도형을 이루는 선이나 호나 곡선들이 연결되는 지점의 모양을 결정합니다. 끝점과 제어점이 정확히 같은 위치인, 길이가 0인 부분들은 제외된다.
+  // 이 속성에는 세 가지 값이 있는데, round, bevel, miter이며, 초기 설정값은 miter입니다. 두 부분들이 같은 방향으로 연결되어 있는 경우에는, lineJoin을 설정해도 아무런 효과가 나타나지 않습니다.
+  // round : 도형의 모서리를 연결되는 부분들의 공통 끝점을 중심으로 하는 원 모양으로 만듭니다. 이때 원의 반지름은 선의 두께와 같습니다.
+  // bevel : 도형의 모서리를 연결되는 부분들의 공통 끝점에서 세모 모양으로 만듭니다.
+  // miter : 도형의 모서리를 두 부분의 바깥쪽 테두리 선을 각각 연장하여 교차된 점으로 생긴 마름모꼴 모양으로 만듭니다. miterLimit 속성값에 따라 모양이 달라집니다.
+
+  // function draw() {
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+  //   var lineJoin = ['round', 'bevel', 'miter'];
+  //   ctx.lineWidth = 10;
+  //   for ( var i=0; i<lineJoin.length; i++){
+  //     ctx.lineJoin = lineJoin[i];
+  //     ctx.beginPath();
+  //     ctx.moveTo(-5, 5 + i * 40);
+  //     ctx.lineTo(35, 45 + i * 40);
+  //     ctx.lineTo(75, 5 + i * 40);
+  //     ctx.lineTo(115, 45 + i * 40);
+  //     ctx.lineTo(155, 5 + i * 40);
+  //     ctx.stroke();
+  //   }
+  // }
+
+  // miterLimit 속성 예제
+  // 위의 예제에서 볼 수 있듯이, 속성값을 miter로 하여 두 선이 연결되면, 연결되는 두 선의 바깥쪽 테두리는 연장선이 만나는 지점까지 확장됩니다. 연결된 두 선이 이루는 각도가 크면, 확장되는 영역이 크지 않지만, 각도가 작아짐(끝이 뾰족해짐)에 따라서 이 영역이 기하급수적으로 커질 수도 있습니다.
+
+  // miterLimit 속성은 끝점이 만나는 지점과 테두리 연장선이 만나는 지점이 얼마나 떨어져 있을지를 결정합니다. 두 선이 이 값을 넘게 되면, lineJoin 속성의 bevel 값 모양이 적용됩니다. miterLimit 속성값(HTML <canvas>에서, 초기 설정값은 10.0)에 의해, 현재 좌표 방식 안에서, 선의 두께에 따라, 어느 정도까지 뾰족해질 수 있는지가 계산됩니다. 그래서 miterLimit은 현재 디스플레이 비율이나 경로의 변형 같은 것으로 각각 설정될 수 있습니다. 그렇게 하여 선의 모서리에만 영향을 줍니다.
+
+  // 더 자세히 얘기하자면, 뾰족함 제한(miter limit)은, 선 두께의 반과 확장되는 길이(HTML 캔버스에서, 선이 연결되는 바깥쪽 끝부분과, 경로에서 연결되는 두 부분의 공통 끝점 사이로 측정합니다.)의 최대 허용 비율입니다. 이것은 두 부분의 외곽선이 만나는 안쪽 점과 바깥쪽 점 사이 거리와, 선 두께의 최대 허용 비율과 같습니다. miter 값 모양이 아닌 bevel 값 모양으로 연결되는 지점의 최소 안쪽 각 반 만큼의 값과 같은 것입니다.
+
+
+  // 대시라인 사용하기
+  // setLineDash 메소드와 lineDashOffset 속성은 선의 대시 패턴을 지정합니다.  setLineDash 메소드는 거리를 지정하는 숫자 목록을 받아 선과 틈을 교대로 그리며 lineDashOffset 속성은 패턴을 시작할 위치를 오프셋으로 설정합니다.
+
+  // function loading(){
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+  //   var offset = 0;
+
+  //   function draw() {
+  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //     ctx.setLineDash([4, 2]); // ([ 선 길이 , 틈 길이 ])
+  //     ctx.lineDashOffset = -offset;
+  //     ctx.strokeRect(10, 10, 100, 100);
+  //   }
+
+  //   function march() {
+  //     offset++;
+  //     if(offset > 16) {
+  //       offset = 0;
+  //     }
+  //     draw();
+  //     setTimeout(march, 20);
+  //   }
+
+  //   march();
+  // }
+
+
+  // 그라디언트(Gradient)
+  // 다른 그래픽 프로그램들과 마찬가지로, 선형 및 원형의 그레이디언트를 사용할 수 있습니다. 다음 메소드 중 하나를 사용하여 CanvasGradient (en-US) 객체를 생성합니다. 그런 다음 이 객체를 fillStyle 또는 strokeStyle 속성에 할당 할 수 있습니다.
+
+  // createLinearGradient(x1, y1, x2, y2) : 시작점 좌표를(x1, y1)로 하고, 종료점 좌표를 (x2, y2)로 하는 선형 그라디언트 오브젝트를 생성합니다.
+  // createRadialGradient(x1, y1, r1, x2, y2, r2) : 반지름이 r1이고 좌표(x1, y1)을 중심으로 하는 원과, 반지름이 r2이고 좌표 (x2, y2)를 중심으로 하는 원을 사용하여 그라디언트가 생성됩니다.
+  // ex.
+  // var lineargradient = ctx.createLinearGradient(0, 0, 150, 150);
+  // var radialgradient = ctx.createRadialGradient(75, 75, 0, 75, 100);
+
+  // gradient.addColorStop(position, color) : gradient 오브젝트에 새로운 색 중단점(color stop)을 생성합니다. position은 0.0에서 1.0 사이의 숫자이고 그라디언트에서 색상의 상대적인 위치를 정의합니다. color 인자는 CSS <color>를 나타내는 문자열이어야하고, 그라디언트가 (전환효과로) 진행되면서 도달한 지점의 색상을 의미합니다.
+
+  // 색 중단점은 원하는 만큼 마음대로 추가할 수 있습니다. 흰 색에서 검은 색으로 변하는 선형 그레이디언트를 만들려면 아래와 같이 합니다.
+  // lineargradient = ctx.createLinearGradient(0, 0, 150, 150);
+  // lineargradient.addColorStop(0, 'white');
+  // lineargradient.addColorStop(1, 'black');
+
+  // createLinearGradient 예제
+  // 예제에서 볼 수 있듯이, strokeStyle과 fillStyle 속성 모두 canvasGradient 오브젝트를 속성 값으로 가질 수 있습니다.
+
+  // function draw() {
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+    
+  //   // 그레디언트를 생성한다.
+  //   var lingrad = ctx.createLinearGradient(0, 0, 0, 150);
+  //   lingrad.addColorStop(0, '#00ABEB');
+  //   lingrad.addColorStop(0.5, '#fff');
+  //   lingrad.addColorStop(0.5, '#26C000');
+  //   lingrad.addColorStop(1, '#fff');
+
+  //   var lingrad2 = ctx.createLinearGradient(0, 50, 0, 95);
+  //   lingrad2.addColorStop(0.5, '#000');
+  //   lingrad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+  //   // 외곽선과 채움 스타일에 그레디언트를 적용한다
+  //   ctx.fillStyle = lingrad;
+  //   ctx.strokeStyle = lingrad2;
+
+  //   // 도형을 그린다
+  //   ctx.fillRect(10, 10, 130, 130);
+  //   ctx.strokeRect(50, 50, 50, 50);
+  // }
+  // 첫번째 그라디언트는 배경 그라디언트입니다. 보시다시피 같은 위치에 두 가지 색상을 지정했습니다. 매우 선명한 색상 전환을 만들기 위해 이 작업을 수행합니다(이 경우 흰색에서 녹색으로). 일반적으로 색상 중단점을 정의하는 순서는 중요하지 않지만, 이 특별한 경우에는 의미가 있습니다.
+
+  // 두 번째 그래디언트에서는 시작 색상 (위치 0.0)을 지정하지 않았는데, 자동으로 다음 색상 중단점의 색상으로 가정하기 때문에 반드시 필요하지는 않기 때문입니다. 따라서 위치 0.5에 검은색을 지정하면 시작부터 중단점까지 자동으로 검정색 그라이언트를 만듭니다.
+
+  // createRadialGradient 예제
+  // function draw() {
+  //   var ctx = document.getElementById('canvas').getContext('2d');
+
+  //   // 그라디언트를 생성한다
+  //   var radgrad = ctx.createRadialGradient(45,45,10,52,50,30);
+  //   radgrad.addColorStop(0, '#A7D30C');
+  //   radgrad.addColorStop(0.9, '#019F62');
+  //   radgrad.addColorStop(1, 'rgba(1,159,98,0)');
+
+  //   var radgrad2 = ctx.createRadialGradient(105,105,20,112,120,50);
+  //   radgrad2.addColorStop(0, '#FF5F98');
+  //   radgrad2.addColorStop(0.75, '#FF0188');
+  //   radgrad2.addColorStop(1, 'rgba(255,1,136,0)');
+
+  //   var radgrad3 = ctx.createRadialGradient(95,15,15,102,20,40);
+  //   radgrad3.addColorStop(0, '#00C9FF');
+  //   radgrad3.addColorStop(0.8, '#00B5E2');
+  //   radgrad3.addColorStop(1, 'rgba(0,201,255,0');
+
+  //   var radgrad4 = ctx.createRadialGradient(0,150,50,0,140,90);
+  //   radgrad4.addColorStop(0, '#F4F201');
+  //   radgrad4.addColorStop(0.8, '#E4C700');
+  //   radgrad4.addColorStop(1, 'rgba(228,190,0,0');
+
+  //   // 도형을 그린다
+  //   ctx.fillStyle = radgrad4;
+  //   ctx.fillRect(0,0,150,150);
+  //   ctx.fillStyle = radgrad3;
+  //   ctx.fillRect(0,0,150,150);
+  //   ctx.fillStyle = radgrad2;
+  //   ctx.fillRect(0,0,150,150);
+  //   ctx.fillStyle = radgrad;
+  //   ctx.fillRect(0,0,150,150);
+  // }
+
+
+  // 패턴(patterns)
+  // createPattern(image, type) : 새 캔버스 패턴 객체를 만들어 반환합니다. image는 CanvasImageSource(즉, HTMLImageElement, 다른 캔버스, <video>요소 등)입니다.
+
+  // type은 이미지 사용방법을 나타내는 문자열입니다. type은 패턴을 만들기 위해 이미지를 사용하는 방법을 지정하며, 다음 문자열 값 중 하나여야 합니다.
+  // repeat : 수직 및 수평 방향으로 이미지를 이어 붙입니다.
+  // repeat-x : 수평 방향으로만 이미지를 이어 붙입니다.
+  // repeat-y : 수직 방향으로만 이미지를 이어 붙입니다.
+  // no-repeat : 이미지를 이어 붙이지 않습니다. 이미지는 한번만 사용됩니다.
+
+  // 이 메소드를 사용하여 위에서 본 그라디언트 메소드와 매우 유사한 CanvasPattern (en-US) 객체를 생성합니다. 패턴을 생성하면 fillStyle 또는 strokeStyle 속성에 패턴을 할당 할 수 있습니다. 예를 들면 다음과 같습니다.
+  // var img = new Image();
+  // img.src = 'someimage.png';
+  // var ptrn = ctx.createPattern(img, 'repeat');
+  // 참고: drawImage () 메서드와 마찬가지로 이 메소드를 호출하기 전에 이미지가 로드되었는지 확인해야합니다. 그렇지 않으면 패턴이 잘못 그려 질 수 있습니다.
+
+
+  // 그림자
+  // shadowOffsetX = float : 그림자가 객체에서 연장되어야하는 수평 거리를 나타냅니다. 이 값은 변환 행렬의 영향을 받지 않습니다. 기본값은 0입니다.
+  // shadowOffsetY = float : 그림자가 객체에서 연장되어야하는 수직 거리를 나타냅니다. 이 값은 변환 행렬의 영향을 받지 않습니다. 기본값은 0입니다.
+  // shadowBlur = float : 흐림(blur)효과의 크기를 나타냅니다. 이 값은 픽셀 수와 일치하지 않으며 현재 변환 행렬의 영향을 받지 않습니다. 기본값은 0입니다.
+  // shadowColor = color : 그림자 효과의 색상을 나타내는 표준 CSS 색상 값. 기본적으로 완전 검은색입니다.
+
+  // 그림자 있는 글자 예제
+  function draw() {
+    var ctx = document.getElementById('canvas').getContext('2d');
+
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    ctx.shadowBlur = 2;
+    ctx.shadowColor = "rgba(0,0,0,0.5)";
+
+    ctx.font = "20px Times New Roman";
+    ctx.fillStyle = "Black";
+    ctx.fillText("Sample String", 5, 30);
+  }
+
+  // 캔버스 채우기 규칙
+  // fill (혹은 clip (en-US) 및 isPointinPath (en-US))을 사용할 때 한 점이 경로 안쪽 또는 바깥에 있는지 그리고 따라서 채워지는지 여부를 결정하기 위한 채우기 규칙 알고리즘을 선택적으로 제공 할 수 있습니다. 경로가 교차하거나 중첩 된 경우에 유용합니다.
+
+  // 다음 두가지 값을 사용할 수 있습니다:
+  // "nonzero" : non-zero winding rule 알고리즘. 기본값.
+  // "evenodd" : even-odd winding rule 알고리즘.
+
+  function draw() {
+    var ctx = document.getElementById('canvas').getContext('2d');
+    ctx.beginPath();
+    ctx.arc(50, 50, 30, 0, Math.PI * 2, true);
+    ctx.arc(50, 50, 15, 0, Math.PI * 2, true);
+    ctx.fill('evenodd');
+  }
+
+
+</script>
+
+<body onload="draw();">
+<!-- <body onload="loading();"> -->
+  <canvas id="canvas" width="150" height="150"></canvas>
+</body>
+</html>

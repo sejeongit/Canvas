@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Canvas 튜토리얼</title>
+    <script type="text/javascript">
+      function draw(){
+        var canvas = document.getElementById('tutorial');
+        if(canvas.getContext){
+          var ctx = canvas.getContext('2d');
+        }
+      }
+    </script>
+    <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+  </head>
+  <body onload="draw();">
+    <canvas id="tutorial" width="150" height="150"></canvas>
+    <!-- 위 스크립트에 draw() 함수 문서가 호출되었는데, 이는 문서가 load 이벤트를 수신하여 페이지 로딩이 완료될 때 한번 실행됩니다. 이 함수 혹은 이와 유사한 함수는, 페이지가 처음 로딩되는 한, window.setTimeout(), window.setInterval() (en-US), 혹은 또 다른 이벤트 핸들러 등을 이용하여 호출될 수 있습니다. -->
+
+
+    <!-- canvas 튜토리얼 -->
+    <!-- 실제로 <canvas> 요소에는 width와 height의 두 속성만 있습니다. 이것들은 모두 선택사항이며 DOM 프로퍼티를 사용하여 설정할 수도 있습니다.
+      요소는 CSS에 의해 임의로 크기를 정할 수 있지만 렌더링하는 동안 이미지는 레이아웃 크기에 맞게 크기가 조정됩니다. CSS 크기 지정이 초기 캔버스의 비율을 고려하지 않으면 왜곡되어 나타납니다 . -->
+    <!-- * 노트: 만약 렌더링이 왜곡된 것처럼 보이는 경우 CSS를 사용하지 않고 <canvas> 속성에서 width 및 height 속성을 명시적으로 지정하십시오. -->
+
+    <!-- <canvas>요소는 일반적인 이미지 (margin, border, background…) 처럼 스타일을 적용시킬 수 있습니다. 하지만 이 방법은 실제 캔버스 위에 그리는 것에는 영향을 끼치지 않습니다. 
+      캔버스에 스타일링이 따로 지정 돼있지 않았다면, 캔버스 스타일은 투명으로 설정되어있습니다. -->
+
+    <!-- <canvas>태그 를 지원하지 않는 브라우저는 컨테이너를 무시하고 컨테이너 내부의 대체 콘텐츠를 렌더링 합니다. <canvas>를 지원하는 브라우저는 컨테이너 내부의 내용을 무시하고 캔버스를 정상적으로 렌더링합니다. -->
+
+    <!-- </canvas> 닫는 태그 필수 -->
+    <!-- 대체 컨텐츠가 제공되는 방식때문에, <img> 요소와 달리, <canvas> 요소는 닫는 태그(</canvas>)가 필요합니다. 닫는 태그가 없다면, 문서의 나머지 부분이 대체 컨텐츠로 간주되고 보이지 않을 것입니다. -->
+
+    <!-- 렌더링 컨텍스트 -->
+    <!-- <canvas> 엘리먼트는 고정 크기의 드로잉 영역을 생성하고 하나 이상의 렌더링 컨텍스(rendering contexts)를 노출하여, 출력할 컨텐츠를 생성하고 다루게 됩니다. -->
+    <!-- 캔버스는 처음에 비어있습니다. 무언가를 표시하기 위해서, 어떤 스크립트가 랜더링 컨텍스트에 접근하여 그리도록 할 필요가 있습니다.
+      <canvas> 요소는 getContext() 메서드를 이용해서, 랜더링 컨텍스트와 (렌더링 컨텍스트의) 그리기 함수들을 사용할 수 있습니다. 
+      getContext() 메서드는 렌더링 컨텍스트 타입을 지정하는 하나의 파라메터를 가집니다. 본 튜토리얼에서 다루고 있는 2D 그래픽의 경우, CanvasRenderingContext2D (en-US)을 얻기위해 "2d"로 지정합니다. -->
+    <!-- var canvas = document.getElementById('tutorial');  var ctx = canvas.getContext('2d'); -->
+    <!-- 첫 번째 줄의 스크립트는  document.getElementById() 메서드를 호출하여 <canvas> 요소를 표시할 DOM을 검색합니다. 요소가 있으면 getContext() 메서드를 사용하여 드로잉 컨텍스트에 액세스 할 수 있습니다. -->
+
+    <!-- 지원여부 검사 -->
+    <!-- 대체 콘텐츠는 <canvas>를 지원하지 않는 브라우저에 표시됩니다. 스크립트 역시 간단하게 getContext() 메소드의 존재 여부를 테스트함으로써 프로그래밍 방식으로 지원하는지를 확인할 수 있습니다.
+      위의 코드 예제는 다음과 같이 될 수 있습니다: -->
+    <!-- var canvas = document.getElementById('tutorial');
+         if (canvas.getContext){
+           var ctx canvas.getContext('2d');
+           // drawing code here
+         }else {
+           // canvas-unsupported code here
+         } -->
+  </body>
+</html>
