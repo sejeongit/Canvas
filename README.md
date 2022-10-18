@@ -13,7 +13,7 @@ Canvas api 스터디
 - 텍스트 그리기, 텍스트 스타일 적용하기
 <br />
 
-### canvas 변형(transformations)
+### canvas 변형
 - canvas 상태 저장/복원 : canvas 상태는 스택에 쌓인다.
 - canvas 이동, 회전
 - canvas 확대, 축소
